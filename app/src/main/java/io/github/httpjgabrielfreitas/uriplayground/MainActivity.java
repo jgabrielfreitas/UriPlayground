@@ -4,9 +4,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.pavelsikun.vintagechroma.ChromaDialog;
+import com.pavelsikun.vintagechroma.ChromaUtil;
 import com.pavelsikun.vintagechroma.IndicatorMode;
 import com.pavelsikun.vintagechroma.OnColorSelectedListener;
 import com.pavelsikun.vintagechroma.colormode.ColorMode;
@@ -14,9 +17,10 @@ import com.pavelsikun.vintagechroma.colormode.ColorMode;
 public class MainActivity extends AppCompatActivity {
 
   private static final String EXTRA_MODE = "extra_MODE";
-  String defaultColor = "000000";
+  String selectedColor = "000000";
   private ColorMode mode;
   private int color;
+  @BindView(R.id.colorView) View colorView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -31,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.fab)
   public void facbClicked() {
 
-    Log.e("click", "clicked!@");
     IndicatorMode indicatorMode = IndicatorMode.HEX;
     if(mode == ColorMode.HSV
         || mode == ColorMode.CMYK
@@ -51,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void updateTextView(int newColor) {
-    Log.e("color", "Color: " + newColor);
+    colorView.setBackgroundColor(Color.parseColor(convertColorIntToString(newColor)));
+  }
 
+  private String convertColorIntToString(int color) {
+    return ChromaUtil.getFormattedColorString(color, false);
   }
 }
