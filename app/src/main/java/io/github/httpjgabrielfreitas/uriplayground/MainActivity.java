@@ -1,6 +1,8 @@
 package io.github.httpjgabrielfreitas.uriplayground;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +15,14 @@ import com.pavelsikun.vintagechroma.ChromaUtil;
 import com.pavelsikun.vintagechroma.IndicatorMode;
 import com.pavelsikun.vintagechroma.OnColorSelectedListener;
 import com.pavelsikun.vintagechroma.colormode.ColorMode;
+
+import static android.content.Intent.ACTION_VIEW;
+import static com.pavelsikun.vintagechroma.IndicatorMode.DECIMAL;
+import static com.pavelsikun.vintagechroma.IndicatorMode.HEX;
+import static com.pavelsikun.vintagechroma.colormode.ColorMode.CMYK;
+import static com.pavelsikun.vintagechroma.colormode.ColorMode.HSL;
+import static com.pavelsikun.vintagechroma.colormode.ColorMode.HSV;
+import static com.pavelsikun.vintagechroma.colormode.ColorMode.RGB;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,17 +38,26 @@ public class MainActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     mode = savedInstanceState == null
-        ? ColorMode.RGB
+        ? RGB
         : ColorMode.values()[savedInstanceState.getInt(EXTRA_MODE)];
+  }
+
+  private void updateTextView(int newColor) {
+    colorView.setBackgroundColor(Color.parseColor(convertColorIntToString(newColor)));
+  }
+
+  private String convertColorIntToString(int color) {
+    selectedColor = ChromaUtil.getFormattedColorString(color, false);
+    return selectedColor;
   }
 
   @OnClick(R.id.fab)
   public void facbClicked() {
 
-    IndicatorMode indicatorMode = IndicatorMode.HEX;
-    if(mode == ColorMode.HSV
-        || mode == ColorMode.CMYK
-        || mode == ColorMode.HSL) indicatorMode = IndicatorMode.DECIMAL; // cuz HEX is dumb for those
+    IndicatorMode indicatorMode = HEX;
+    if(mode == HSV
+        || mode == CMYK
+        || mode == HSL) indicatorMode = DECIMAL; // cuz HEX is dumb for those
 
     new ChromaDialog.Builder()
         .initialColor(color)
@@ -53,11 +72,16 @@ public class MainActivity extends AppCompatActivity {
         .show(getSupportFragmentManager(), "dialog");
   }
 
-  private void updateTextView(int newColor) {
-    colorView.setBackgroundColor(Color.parseColor(convertColorIntToString(newColor)));
+  @OnClick(R.id.sendColorButton)
+  public void sendColor() {
+    Log.e("color", selectedColor);
+
+    Uri.Builder builder = new Uri.Builder();
+    builder.scheme("urireceiver").authority("path").appendQueryParameter("color", selectedColor);
+
+    Intent intent = new Intent(ACTION_VIEW);
+    intent.setDataAndType(builder.build(), "text/plain");
+    startActivity(intent);
   }
 
-  private String convertColorIntToString(int color) {
-    return ChromaUtil.getFormattedColorString(color, false);
-  }
 }
