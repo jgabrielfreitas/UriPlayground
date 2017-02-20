@@ -27,6 +27,7 @@
       android:layout_gravity="bottom|end"
       app:backgroundTint="@color/colorAccent"
       app:elevation="6dp"
+      android:layout_margin="@dimen/activity_horizontal_margin"
       app:srcCompat="@drawable/palette"
       />
 

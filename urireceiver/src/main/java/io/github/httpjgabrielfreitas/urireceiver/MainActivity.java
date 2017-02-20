@@ -3,11 +3,10 @@ package io.github.httpjgabrielfreitas.urireceiver;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Get the intent that started this activity
     Intent intent = getIntent();
-    Uri data = intent.getData();
+    Uri data      = intent.getData();
 
     // Figure out what to do based on the intent type
     if (intent.getType() != null && intent.getType().contains("text/plain")) {
@@ -47,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
     if (packageId != null) {
 
-      Intent resultIntent = new Intent(packageId, Uri.parse(packageId));
+      Uri.Builder resultUri = new Uri.Builder();
 
+      Intent resultIntent = new Intent();
+      setResult(RESULT_OK, resultIntent);
+      finish();
 
     } else {
       makeText(this, "packageId = null !!", LENGTH_SHORT).show();

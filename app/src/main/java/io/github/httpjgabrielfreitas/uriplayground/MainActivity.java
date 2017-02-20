@@ -3,12 +3,10 @@ package io.github.httpjgabrielfreitas.uriplayground;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jgabrielfreitas.layoutid.annotations.InjectLayout;
 import com.pavelsikun.vintagechroma.ChromaDialog;
@@ -28,10 +26,8 @@ import static com.pavelsikun.vintagechroma.colormode.ColorMode.RGB;
 @InjectLayout(layout = R.layout.activity_main)
 public class MainActivity extends AbstractActivity {
 
-  private static final String EXTRA_MODE = "extra_MODE";
-  String selectedColor = "000000";
+  String selectedColor   = "000000";
   private ColorMode mode = RGB;
-  private int color;
   @BindView(R.id.colorView) View colorView;
 
   private void updateTextView(int newColor) {
@@ -52,7 +48,6 @@ public class MainActivity extends AbstractActivity {
         || mode == HSL) indicatorMode = DECIMAL; // cuz HEX is dumb for those
 
     new ChromaDialog.Builder()
-        .initialColor(color)
         .colorMode(mode)
         .indicatorMode(indicatorMode) //HEX or DECIMAL;
         .onColorSelected(new OnColorSelectedListener() {
@@ -78,4 +73,12 @@ public class MainActivity extends AbstractActivity {
     startActivity(intent);
   }
 
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    Uri result = data.getData();
+    //Toast.makeText(this, result.getQueryParameter("result"), Toast.LENGTH_SHORT).show();
+    Log.e("result", "result OK");
+
+  }
 }
