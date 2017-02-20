@@ -47,8 +47,9 @@ public class MainActivity extends AppCompatActivity {
     if (packageId != null) {
 
       Uri.Builder resultUri = new Uri.Builder();
+      resultUri.scheme("result").authority("color").appendQueryParameter("result", "working");
 
-      Intent resultIntent = new Intent();
+      Intent resultIntent = new Intent(packageId, resultUri.build());
       setResult(RESULT_OK, resultIntent);
       finish();
 

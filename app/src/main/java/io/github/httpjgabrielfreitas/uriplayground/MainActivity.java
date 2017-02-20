@@ -70,14 +70,14 @@ public class MainActivity extends AbstractActivity {
 
     Intent intent = new Intent(ACTION_VIEW);
     intent.setDataAndType(builder.build(), "text/plain");
-    startActivity(intent);
+    startActivityForResult(intent, 99);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     Uri result = data.getData();
-    //Toast.makeText(this, result.getQueryParameter("result"), Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, result.getQueryParameter("result"), Toast.LENGTH_SHORT).show();
     Log.e("result", "result OK");
 
   }
