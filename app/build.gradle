@@ -32,4 +32,6 @@ dependencies {
   compile 'com.pavelsikun:vintage-chroma:1.5'
   compile 'com.jakewharton:butterknife:8.5.1'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+  compile 'com.github.jgabrielfreitas:InjectLayout:1.0.1'
+
 }

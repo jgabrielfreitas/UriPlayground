@@ -19,5 +19,15 @@
       android:textColor="#fff"
       android:layout_centerVertical="true"
       android:layout_centerHorizontal="true"
+      android:textSize="30sp"
+      />
+  <Button
+      android:text="Return OK"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/colorReceived"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="39dp"
+      android:id="@+id/returnOkButton"
       />
 </RelativeLayout>

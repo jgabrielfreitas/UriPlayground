@@ -10,6 +10,7 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.jgabrielfreitas.layoutid.annotations.InjectLayout;
 import com.pavelsikun.vintagechroma.ChromaDialog;
 import com.pavelsikun.vintagechroma.ChromaUtil;
 import com.pavelsikun.vintagechroma.IndicatorMode;
@@ -24,23 +25,14 @@ import static com.pavelsikun.vintagechroma.colormode.ColorMode.HSL;
 import static com.pavelsikun.vintagechroma.colormode.ColorMode.HSV;
 import static com.pavelsikun.vintagechroma.colormode.ColorMode.RGB;
 
-public class MainActivity extends AppCompatActivity {
+@InjectLayout(layout = R.layout.activity_main)
+public class MainActivity extends AbstractActivity {
 
   private static final String EXTRA_MODE = "extra_MODE";
   String selectedColor = "000000";
-  private ColorMode mode;
+  private ColorMode mode = RGB;
   private int color;
   @BindView(R.id.colorView) View colorView;
-
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    ButterKnife.bind(this);
-
-    mode = savedInstanceState == null
-        ? RGB
-        : ColorMode.values()[savedInstanceState.getInt(EXTRA_MODE)];
-  }
 
   private void updateTextView(int newColor) {
     colorView.setBackgroundColor(Color.parseColor(convertColorIntToString(newColor)));
@@ -52,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.fab)
-  public void facbClicked() {
+  public void fabClicked() {
 
     IndicatorMode indicatorMode = HEX;
     if(mode == HSV
@@ -77,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
     Log.e("color", selectedColor);
 
     Uri.Builder builder = new Uri.Builder();
-    builder.scheme("urireceiver").authority("path").appendQueryParameter("color", selectedColor);
+    builder.scheme("urireceiver").authority("path")
+                                 .appendQueryParameter("color", selectedColor)
+                                 .appendQueryParameter("pkgId", getApplicationInfo().packageName);
 
     Intent intent = new Intent(ACTION_VIEW);
     intent.setDataAndType(builder.build(), "text/plain");
